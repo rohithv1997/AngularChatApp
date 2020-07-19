@@ -1,8 +1,10 @@
 export const Constants = {
-    Nickname: 'nickname',
-    Users: 'users/',
-    Rooms: 'rooms/',
-    Chats: 'chats/',
-    Roomusers: 'roomusers/',
-    Roomname: 'roomname'
+    nickname: 'nickname',
+    roomname: 'roomname',
+    Routes: {
+        users: 'users/',
+        rooms: 'rooms/',
+        chats: 'chats/',
+        roomusers: 'roomusers/',
+    }
 };

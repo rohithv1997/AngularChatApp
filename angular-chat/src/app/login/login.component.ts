@@ -29,19 +29,19 @@ export class LoginComponent implements OnInit {
       nickname: new FormControl('', Validators.required)
     });
 
-    if (this.localStorageService.checkItemExists(Constants.Nickname)) {
-      this.loginForm.patchValue({nickname: this.localStorageService.getItem(Constants.Nickname)});
+    if (this.localStorageService.checkItemExists(Constants.nickname)) {
+      this.loginForm.patchValue({nickname: this.localStorageService.getItem(Constants.nickname)});
     }
   }
 
   public getNicknameControl(): AbstractControl {
-    return this.loginForm.get(Constants.Nickname);
+    return this.loginForm.get(Constants.nickname);
   }
 
   onFormSubmit(): void {
     this.firebaseService.addOrEdit(
-      Constants.Users,
-      Constants.Nickname,
+      Constants.Routes.users,
+      Constants.nickname,
       this.loginForm.value,
       this.navigateToRoomList.bind(this),
       this.navigateToRoomList.bind(this));

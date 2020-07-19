@@ -20,7 +20,9 @@ export class AddroomComponent implements OnInit {
     private firebaseSerivce: FireBaseService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {
+    this.nickname = this.activatedRoute.snapshot.params.nickname;
+  }
 
   ngOnInit(): void {
     this.roomForm = new FormGroup({
@@ -30,10 +32,10 @@ export class AddroomComponent implements OnInit {
 
   onFormSubmit(): void {
     this.firebaseSerivce.listenOnceToFirebase(
-      Constants.Roomname,
-      this.roomForm.value[Constants.Roomname],
-      Constants.Rooms,
-      this.roomForm.value[Constants.Roomname],
+      Constants.roomname,
+      this.roomForm.value[Constants.roomname],
+      Constants.Routes.rooms,
+      this.roomForm.value[Constants.roomname],
       this.onSnackbarExists.bind(this),
       this.navigateToRoomList.bind(this)
     );
@@ -44,6 +46,6 @@ export class AddroomComponent implements OnInit {
   }
 
   private navigateToRoomList(): void {
-    this.router.navigate(['/roomlist', '']);
+    this.router.navigate(['/roomlist', this.nickname]);
   }
 }

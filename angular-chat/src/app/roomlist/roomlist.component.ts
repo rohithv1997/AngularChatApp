@@ -26,30 +26,31 @@ export class RoomlistComponent implements OnInit {
     private router: Router,
     public datePipe: DatePipe
   ) {
-    this.nickname = this.localStorageService.getItem(Constants.Nickname);
+    this.nickname = this.activatedRoute.snapshot.params.nickname;
     this.rooms = [];
+  }
+
+  ngOnInit(): void {
     this.loadRooms();
   }
 
-  ngOnInit(): void { }
-
   private loadRooms(): void {
-    this.rooms = this.firebaseService.sendRequest(Constants.Rooms);
+    this.rooms = this.firebaseService.sendRequest(Constants.Routes.rooms);
     this.isLoadingResults = false;
   }
 
   public enterChatRoom(roomname: string): void {
     const chat = this.createChat(roomname);
-    this.firebaseService.addItemToFirebase(Constants.Chats, chat);
-    const roomUser = this.firebaseService.subscribeToFirebase(Constants.Roomusers, Constants.Roomname, roomname);
+    this.firebaseService.addItemToFirebase(Constants.Routes.chats, chat);
+    const roomUser = this.firebaseService.subscribeToFirebase(Constants.Routes.roomusers, Constants.roomname, roomname);
     const user = roomUser.find(x => x.nickname === this.nickname);
     if (user !== undefined) {
-      this.firebaseService.editItemInFirebase(Constants.Roomusers + user.key, { status: 'online' });
+      this.firebaseService.editItemInFirebase(Constants.Routes.roomusers + user.key, { status: 'online' });
     } else {
       const newroomuser = this.createRoomUser(roomname);
-      this.firebaseService.addItemToFirebase(Constants.Roomusers, newroomuser);
+      this.firebaseService.addItemToFirebase(Constants.Routes.roomusers, newroomuser);
     }
-    this.router.navigate(['/chatroom', roomname]);
+    this.router.navigate(['/chatroom', this.nickname, roomname]);
   }
 
   private createRoomUser(roomname: string): RoomUser {

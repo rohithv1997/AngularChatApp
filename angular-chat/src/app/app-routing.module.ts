@@ -10,8 +10,8 @@ const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'roomlist/:nickname', component: RoomlistComponent },
-  { path: 'addroom', component: AddroomComponent },
-  { path: 'chatroom/:nickname/:roomid', component: ChatroomComponent }
+  { path: 'addroom/:nickname', component: AddroomComponent },
+  { path: 'chatroom/:nickname/:roomname', component: ChatroomComponent }
 ];
 
 @NgModule({

@@ -35,18 +35,25 @@ export class FireBaseService {
         const returnArray = [];
         currentSnapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
             const item = childSnapshot.val();
-            item.key = childSnapshot.key;
             returnArray.push(item);
         });
-
         return returnArray;
     }
 
-    public sendRequest(route: string): firebase.database.DataSnapshot[] {
+    public sendRequest(route: string, onComplete: () => void = null): firebase.database.DataSnapshot[] {
         let returnArray = [];
+
+        // do {
         this.getReference(route).on('value', response => {
             returnArray = this.snapshotToArray(response);
         });
+        //     if (returnArray.length === 0) {
+        //         setTimeout(() => { }, 1000);
+        //     }
+        // } while (returnArray.length === 0);
+        if (onComplete !== null) {
+            onComplete();
+        }
         return returnArray;
     }
 
@@ -70,11 +77,17 @@ export class FireBaseService {
     }
 
     public subscribeToFirebase(route: string, path: string, specifiedValue: string): any[] {
-        let roomuser = [];
+        let returnArray = [];
+
+        // do {
         this.getReference(route).orderByChild(path).equalTo(specifiedValue).on('value', response => {
-            roomuser = this.snapshotToArray(response);
+            returnArray = this.snapshotToArray(response);
         });
-        return roomuser;
+        //     if (returnArray.length === 0) {
+        //         setTimeout(() => { }, 1000);
+        //     }
+        // } while (returnArray.length === 0);
+        return returnArray;
     }
 
     public listenOnceToFirebase(
